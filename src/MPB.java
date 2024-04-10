@@ -4,9 +4,13 @@ import java.io.*;
 public class MPB {
     static List<Ordre> ordre = new ArrayList<>();
     static List<PizzaList> pizzas = new ArrayList<>();
+    static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+
+        menu();
+    } //Afslutning af main
+    public static void sePizzaer() {
         //Oversigt over Pizza og Ingredienser
         pizzas.add(new PizzaList(1, "Vesuvio", "tomatsauce, ost, skinke, oregano", 57));
         pizzas.add(new PizzaList(2, "Amerikaner", "Tomatsauce, ost, oksefars, oregano", 53));
@@ -22,20 +26,7 @@ public class MPB {
         pizzas.add(new PizzaList(12, "Le Blissola", "Tomatsauce, ost, skinke, rejer, oregano", 61));
         pizzas.add(new PizzaList(13, "Venezia", "Tomatsauce, ost, skinke, bacon, oregano", 61));
         pizzas.add(new PizzaList(14, "Mafia", "Tomatsauce, ost, pepperoni, bacon, løg, oregano", 61));
-        //sePizzaer();
 
-        menu(sc);
-
-        //Vi skal kunne oprette ordre
-        //Vi skal kunne se liste over bestillinger
-        //Vi skal kunne afslutte ordre
-        //Vi skal kunne se menukort
-        //Vi skal kunne se ordrehistorik
-        //Vi skal kunne afslutte programmet
-
-    } //Afslutning af main
-
-    public static void sePizzaer() {
         System.out.println("Pizzaliste:");
         System.out.printf("%-3s %-15s %-65s %-5s\n", "Nr.", "Navn", "Ingredienser", "Pris");
         System.out.println("----------------------------------------------------------------------------------------------------------");
@@ -54,7 +45,7 @@ public class MPB {
         return null;
     }
 
-    public static void menu(Scanner sc) {
+    public static void menu() {
         System.out.println("Menu: ");
         System.out.println("1. Opret ordre");
         System.out.println("2. Vis aktive bestillinger");
@@ -68,19 +59,19 @@ public class MPB {
             case 1:
                 sePizzaer();
                 opretOrdre();
-                menu(sc);
+                menu();
             case 2:
                 listeOverBestillinger();
-                menu(sc);
+                menu();
             case 3:
                 gemFlytAfslutOrdre(ordre.size());
-                menu(sc);
+                menu();
             case 4:
                 sePizzaer();
-                menu(sc);
+                menu();
             case 5:
                 //ordreHistorik();
-                menu(sc);
+                menu();
             case 6:
                 System.exit(0);
             default:
@@ -89,7 +80,6 @@ public class MPB {
     }//Afslutning af menu
 
     public static Ordre opretOrdre() {
-        Scanner sc = new Scanner(System.in);
         ArrayList<PizzaList> pizzas = new ArrayList<>();
 
         while (true) {
@@ -145,9 +135,8 @@ public class MPB {
         }
     }
     public static void gemFlytAfslutOrdre(int ordreNr){
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Indtast ordrenummeret, der skal fjernes:");
-        int ordreNr1 = scanner.nextInt();
+        int ordreNr1 = sc.nextInt();
 
         Iterator<Ordre> iterator = ordre.iterator();
         while (iterator.hasNext()){
