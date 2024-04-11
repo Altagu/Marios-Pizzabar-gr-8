@@ -1,3 +1,4 @@
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.io.*;
 
@@ -91,16 +92,22 @@ public class MPB {
 
         while (true) {
             System.out.println("Hvilken pizza vil du tilføje (tast 0 for at afslutte)");
-            int pizzaNumber = sc.nextInt();
-            if (pizzaNumber == 0) {
-                break;
+            try {
+                int pizzaNumber = sc.nextInt();
+                if (pizzaNumber == 0) {
+                    break;
+                }
+                PizzaList pizza = getPizzaByNumber(pizzaNumber);
+                if (pizza != null) {
+                    pizzas.add(pizza);
+                    System.out.println("Pizzaen blev tilføjet til ordren");
+                } else {
+                    System.out.println("Pizzaen findes ikke, prøv et andet nr.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Fejl: Indtast venligst et tal.");
+                sc.next(); // Clear the invalid input
             }
-            PizzaList pizza = getPizzaByNumber(pizzaNumber);
-            if (pizza != null) {
-                pizzas.add(pizza);
-                System.out.println("Pizzaen blev tilføjet til ordren\n\n");
-
-            } else System.out.println("Pizzaen findes ikke, prøv et andet nr.\n");
         }
         System.out.println("Hvad er kundens navn?");
         sc.nextLine();
@@ -109,15 +116,38 @@ public class MPB {
         System.out.println("Hvad er kundes adresse?");
         String adresse = sc.nextLine();
 
-        System.out.println("Hvad er kundes telefonnummer?");
-        int tlfnr = sc.nextInt();
+        int tlfnr;
+        while (true) {
+            System.out.println("Hvad er kundes telefonnummer?");
+            try {
+                tlfnr = sc.nextInt();
+                break;
+            } catch (InputMismatchException e) {
+                    System.out.println("Ugyldigt telefonnummer. Prøv igen.");
+                    sc.next();
+            }
+        }
         sc.nextLine();  // consume leftover newline
 
         System.out.println("Hvad er kundes email?");
         String email = sc.nextLine();
 
+        //Den her virker Tid
         System.out.println("Hvornår skal ordren være klar? (Angiv TID som HH:MM)");
         String tid = sc.next();
+
+        //DEN HER VIRKER IKKE
+        /*String tid;
+        while (true) {
+            System.out.println("Hvornår skal ordren være klar? (Angiv TID som HH:MM)");
+            try {
+                tid = sc.next();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("test");
+                sc.next();
+            }
+        }*/
 
         System.out.println("Ordren er nu oprettet, tak for din bestilling!");
 
@@ -130,7 +160,7 @@ public class MPB {
     //Liste over bestillinger
     public static void listeOverBestillinger() {
         Collections.sort(ordre, Comparator.comparing(Ordre::getTid));
-        System.out.println("Liste over bestillinger:\n");
+        System.out.println("Liste over bestillinger: ");
         for (Ordre o : ordre) {
             System.out.println("Ordre nr: " + o.getOrdreNr());
             System.out.println("Kunde navn: " + o.getNavn());
@@ -160,7 +190,7 @@ public class MPB {
                 break;
             }
         }
-    }//gemFlytAfslutOrdr
+    }//gemFlytAfslutOrdre
 
     public static void seOrdrehistorik() {
         try (BufferedReader reader = new BufferedReader(new FileReader("ordrehistorik.txt"))) {
