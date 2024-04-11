@@ -160,7 +160,7 @@ public class MPB {
                 break;
             }
         }
-    }//gemFlytAfslutOrdre
+    }//gemFlytAfslutOrdr
 
     public static void seOrdrehistorik() {
         try (BufferedReader reader = new BufferedReader(new FileReader("ordrehistorik.txt"))) {
