@@ -95,24 +95,24 @@ public class MPB {
 
             } else System.out.println("Pizzaen findes ikke, prøv et andet nr.");
         }
-        System.out.println("Hvad er dit navn?");
+        System.out.println("Hvad er kundens navn?");
         sc.nextLine();
         String navn = sc.nextLine();
 
-        System.out.println("Hvad er din adresse?");
+        System.out.println("Hvad er kundes adresse?");
         String adresse = sc.nextLine();
 
-        System.out.println("Hvad er dit telefonnummer?");
+        System.out.println("Hvad er kundes telefonnummer?");
         int tlfnr = sc.nextInt();
         sc.nextLine();  // consume leftover newline
 
-        System.out.println("Hvad er din email?");
+        System.out.println("Hvad er kundes email?");
         String email = sc.nextLine();
 
-        System.out.println("Hvornår vil du have din pizza? (Angiv TID som HH:MM)");
+        System.out.println("Hvornår skal ordren være klar? (Angiv TID som HH:MM)");
         String tid = sc.next();
 
-        System.out.println("Din ordre er nu oprettet, tak for din bestilling!");
+        System.out.println("Ordren er nu oprettet, tak for din bestilling!");
 
         int ordreNr = ordre.size() + 1;
         Ordre newOrdre = new Ordre(pizzas, navn, adresse, tlfnr, email, tid, ordreNr);
@@ -152,6 +152,5 @@ public class MPB {
                 break;
             }
         }
-
     }//Afslutning af afslutOrdre
-}
+}//Afslutning af MPB class
