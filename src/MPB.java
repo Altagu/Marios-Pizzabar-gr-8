@@ -7,9 +7,9 @@ public class MPB {
     static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
-
         menu();
     } //Afslutning af main
+
     public static void sePizzaer() {
         //Oversigt over Pizza og Ingredienser
         pizzas.add(new PizzaList(1, "Vesuvio", "tomatsauce, ost, skinke, oregano", 57));
@@ -54,29 +54,36 @@ public class MPB {
         System.out.println("5. Se ordrehistorikken");
         System.out.println("6. Afslut programmet");
 
-        int choice = sc.nextInt();
-        switch (choice) {
-            case 1:
-                sePizzaer();
-                opretOrdre();
-                menu();
-            case 2:
-                listeOverBestillinger();
-                menu();
-            case 3:
-                gemFlytAfslutOrdre(ordre.size());
-                menu();
-            case 4:
-                sePizzaer();
-                menu();
-            case 5:
-                //ordreHistorik();
-                menu();
-            case 6:
-                System.exit(0);
-            default:
-                System.out.println("Ugyldigt valg vælg mellem 1-6.");
-        }//Afslutning af switch
+        try {
+            int choice = sc.nextInt();
+            switch (choice) {
+                case 1:
+                    sePizzaer();
+                    opretOrdre();
+                    menu();
+                case 2:
+                    listeOverBestillinger();
+                    menu();
+                case 3:
+                    gemFlytAfslutOrdre(ordre.size());
+                    menu();
+                case 4:
+                    sePizzaer();
+                    menu();
+                case 5:
+                    seOrdrehistorik();
+                    menu();
+                case 6:
+                    System.exit(0);
+                default:
+                    System.out.println("Ugyldigt valg vælg mellem 1-6.\n");
+                    menu();
+            }//Afslutning af switch
+        } catch (InputMismatchException e){
+            System.out.println("Ugyildigt tegn! Vælg mellem 1-6\n");
+            sc.next();
+            menu();
+        }
     }//Afslutning af menu
 
     public static Ordre opretOrdre() {
@@ -93,26 +100,26 @@ public class MPB {
                 pizzas.add(pizza);
                 System.out.println("Pizzaen blev tilføjet til ordren\n\n");
 
-            } else System.out.println("Pizzaen findes ikke, prøv et andet nr.");
+            } else System.out.println("Pizzaen findes ikke, prøv et andet nr.\n");
         }
-        System.out.println("Hvad er dit navn?");
+        System.out.println("Hvad er kundens navn?");
         sc.nextLine();
         String navn = sc.nextLine();
 
-        System.out.println("Hvad er din adresse?");
+        System.out.println("Hvad er kundes adresse?");
         String adresse = sc.nextLine();
 
-        System.out.println("Hvad er dit telefonnummer?");
+        System.out.println("Hvad er kundes telefonnummer?");
         int tlfnr = sc.nextInt();
         sc.nextLine();  // consume leftover newline
 
-        System.out.println("Hvad er din email?");
+        System.out.println("Hvad er kundes email?");
         String email = sc.nextLine();
 
-        System.out.println("Hvornår vil du have din pizza? (Angiv TID som HH:MM)");
+        System.out.println("Hvornår skal ordren være klar? (Angiv TID som HH:MM)");
         String tid = sc.next();
 
-        System.out.println("Din ordre er nu oprettet, tak for din bestilling!");
+        System.out.println("Ordren er nu oprettet, tak for din bestilling!");
 
         int ordreNr = ordre.size() + 1;
         Ordre newOrdre = new Ordre(pizzas, navn, adresse, tlfnr, email, tid, ordreNr);
@@ -134,24 +141,35 @@ public class MPB {
             System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         }
     }
-    public static void gemFlytAfslutOrdre(int ordreNr){
+    public static void gemFlytAfslutOrdre(int ordreNr) {
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Indtast ordrenummeret, der skal fjernes:");
-        int ordreNr1 = sc.nextInt();
-
+        int ordreNr1 = scanner.nextInt();
         Iterator<Ordre> iterator = ordre.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             Ordre ordre = iterator.next();
-            if (ordre.getOrdreNr() == ordreNr){
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter("Ordrehistorik.txt", true))){
+            if (ordre.getOrdreNr() == ordreNr1) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter("ordrehistorik.txt", true))) {
                     writer.write(ordre.toString());
                     writer.newLine();
-                } catch (IOException e){
-                    System.out.println("Der er opstået en fejl!" + e.getMessage());
+                } catch (IOException e) {
+                    System.out.println("Der 2opstod en fejl ved skrivning til filen: " + e.getMessage());
                 }
                 iterator.remove();
+                System.out.println("Ordre " + ordreNr + " er blevet fjernet.");
                 break;
             }
         }
+    }//gemFlytAfslutOrdre
 
-    }//Afslutning af afslutOrdre
-}
+    public static void seOrdrehistorik() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("ordrehistorik.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Der opstod en fejl ved læsning af filen: " + e.getMessage());
+        }
+    }//seOrdrehistorik
+}//Afslutning af MPB class

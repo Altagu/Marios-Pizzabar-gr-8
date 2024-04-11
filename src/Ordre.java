@@ -34,12 +34,15 @@ public class Ordre {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (PizzaList pizza : pizzas){
-            sb.append(String.format("Nr: %-10d P-Navn: %-15s Ingredienser: %-65s\nKd: %-10s KD adr: %-15s Telefonnummer: %-10d Email: %-20s \nForventes færdig kl: %-20s \n",
-                    pizza.getNumber(), pizza.getName(), pizza.getIngredients(), navn, adresse, tlfnr, email, tid));
+        sb.append("Ordre nr: ").append(ordreNr).append("\n");
+        sb.append("Kunde navn: ").append(navn).append("\n");
+        sb.append("Pizzaer skal være klar kl: ").append(tid).append("\n");
+        for (PizzaList p : pizzas) {
+            sb.append(p).append("\n");
         }
+        sb.append("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         return sb.toString();
     }
 }
